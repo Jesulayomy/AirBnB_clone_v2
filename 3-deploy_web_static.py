@@ -2,6 +2,7 @@
 
 """ packs and deploys a new version to the server """
 
+
 import os
 from fabric.api import env, local, run, put
 from datetime import datetime
@@ -55,7 +56,7 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """ Pack and deploy """
+    """ Pack and deploy function for task 3 """
 
     version = do_pack()
     if not version:
