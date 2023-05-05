@@ -4,7 +4,7 @@
 
 
 import os
-from fabric.api import env, local, run, put
+from fabric.api import env, local, run, put, runs_once
 from datetime import datetime
 
 env.user = 'ubuntu'
