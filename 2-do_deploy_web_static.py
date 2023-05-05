@@ -1,4 +1,4 @@
-#!/uusr/bin/python3
+#!/usr/bin/python3
 
 """ Deploys a web static to servers based on some weird shit """
 
