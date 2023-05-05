@@ -13,7 +13,7 @@ env.hosts = ['18.234.106.179', '34.207.83.122']
 
 @runs_once
 def do_pack():
-    """ A function to pack the current webstatic version """
+    """ A function to pack the current webstatic version to an archive """
 
     local('mkdir -p versions')
 
@@ -31,7 +31,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """ Deploys a webstatic to a webserver """
+    """ Deploys a webstatic to a webserver through thescript crreated and """
 
     if not os.path.isfile(archive_path):
         return False
@@ -56,7 +56,10 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """ Pack and deploy function for task 3 """
+    """
+        Pack and deploy function for task 3, creates an archive, then sends
+        it to a server
+    """
 
     version = do_pack()
     if not version:
