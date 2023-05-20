@@ -5,9 +5,9 @@
 """
 
 from flask import Flask, render_template
-from markupsafe import escape
 from models import storage
 from models.state import State
+from models.city import City
 
 
 app = Flask(__name__)
@@ -20,13 +20,15 @@ def teardown_session(exception):
     storage.close()
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list_route():
-    """ States list of all dump, all_states is a dictionary containing """
+@app.route('/cities_by_states', strict_slashes=False)
+def city_states_route():
+    """
+        States and city list of all dump, all_states is a
+        dictionary containing all state objects
+    """
 
     states_dict = storage.all(State)
-    new_dict = {value.id: value.name for value in states_dict.values()}
-    return render_template('7-states_list.html', all_states=new_dict)
+    return render_template('8-cities_by_states.html', all_states=states_dict)
 
 
 if __name__ == '__main__':

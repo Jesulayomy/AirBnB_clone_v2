@@ -19,11 +19,11 @@ class State(BaseModel, Base):
         name = Column(String(128), nullable=False)
         cities = relationship(
                 "City",
-                backref="state",
-                cascade="all, delete")
+                cascade="all, delete, delete-orphan",
+                backref="state")
+
     else:
         name = ""
-
         @property
         def cities(self):
             """ returns all cities with state_id == State.id """

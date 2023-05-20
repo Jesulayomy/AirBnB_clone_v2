@@ -10,7 +10,7 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Table, Column, String, text
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 
@@ -37,6 +37,38 @@ class DBStorage:
         self.__engine = create_engine("{}+{}://{}:{}@{}/{}".format(
             dialect, driver, user, password, host, database),
             pool_pre_ping=True)
+
+        """ sort states and cities table """
+        eng = self.__engine
+        Session = sessionmaker(bind=eng)
+        session = Session()
+        metadata = MetaData()
+        metadata.bind = eng
+
+        metadata.reflect(bind=eng)
+
+        tables = metadata.tables
+        try:
+            states_table = tables['states']
+            cities_table = tables['cities']
+
+            session.execute(text(
+                'ALTER TABLE cities MODIFY name varchar(60) AFTER updated_at;'
+                ))
+            session.commit()
+            session.execute(text(
+                'ALTER TABLE cities MODIFY state_id varchar(60) AFTER name;'
+                ))
+            session.commit()
+            session.execute(text(
+                'ALTER TABLE states MODIFY name varchar(60) AFTER updated_at;'
+                ))
+            session.commit()
+        except Exception:
+            pass
+
+        session.close()
+        """ """
 
         if is_test == "test":
             Base.metadata.drop_all(self.__engine)
