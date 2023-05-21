@@ -7,7 +7,7 @@ import uuid
 import models
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, String, DateTime, Integer
+from sqlalchemy import Column, String, DateTime, Integer, func
 
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
     Base = declarative_base()
@@ -24,15 +24,15 @@ class BaseModel:
             nullable=False,
             unique=True)
 
-    created_at = Column(
-                    DateTime,
-                    default=datetime.utcnow(),
-                    nullable=False)
-
     updated_at = Column(
                     DateTime,
-                    default=datetime.utcnow(),
-                    nullable=False)
+                    nullable=False,
+                    server_default=func.current_timestamp())
+
+    created_at = Column(
+                    DateTime,
+                    nullable=False,
+                    server_default=func.current_timestamp())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""

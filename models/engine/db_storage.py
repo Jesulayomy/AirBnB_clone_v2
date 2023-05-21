@@ -49,21 +49,35 @@ class DBStorage:
 
         tables = metadata.tables
         try:
-            states_table = tables['states']
-            cities_table = tables['cities']
+            tables = ['amenities', 'cities', 'places', 'reviews', 'states', 'users']
+            for table in tables:
+                statements = [
+                    "ALTER TABLE {} MODIFY id varchar(60) FIRST;".format(
+                        table),
+                    "ALTER TABLE {} MODIFY updated_at datetime after id;".format(
+                        table),
+                    "ALTER TABLE {} MODIFY created_at datetime after updated_at;".format(
+                        table)
+                    ]
+                for statement in statements:
+                    session.execute(text(statement))
+                    session.commit()
 
+            """ Reuse This """
+            """
             session.execute(text(
-                'ALTER TABLE cities MODIFY name varchar(60) AFTER updated_at;'
+                'ALTER TABLE amenities MODIFY id varchar(60) FIRST;'
                 ))
             session.commit()
             session.execute(text(
-                'ALTER TABLE cities MODIFY state_id varchar(60) AFTER name;'
+                'ALTER TABLE amenities MODIFY updated_at datetime after id;'
                 ))
             session.commit()
             session.execute(text(
-                'ALTER TABLE states MODIFY name varchar(60) AFTER updated_at;'
+                'ALTER TABLE amenities MODIFY created_at datetime after updated_at;'
                 ))
             session.commit()
+            """
         except Exception:
             pass
 
