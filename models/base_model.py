@@ -27,11 +27,13 @@ class BaseModel:
     updated_at = Column(
                     DateTime,
                     nullable=False,
+                    default=func.current_timestamp(),
                     server_default=func.current_timestamp())
 
     created_at = Column(
                     DateTime,
                     nullable=False,
+                    default=func.current_timestamp(),
                     server_default=func.current_timestamp())
 
     def __init__(self, *args, **kwargs):

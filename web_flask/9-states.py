@@ -27,15 +27,15 @@ def states_display(id=None):
 
     states_dict = storage.all(State)
 
+    new_dict = {value.id: value.name for value in states_dict.values()}
     if not id:
-        new_dict = {value.id: value.name for value in states_dict.values()}
         return render_template('7-states_list.html', all_states=new_dict)
 
-    state_id = f'State.{id}'
-    if state_id in states_dict:
+    state_id = str(id)
+    if id in new_dict.keys():
         return render_template(
                 '9-states.html',
-                all_states=states_dict[state_id])
+                all_states=states_dict["State.{}".format(state_id)])
     else:
         return render_template(
                 '9-states.html',
