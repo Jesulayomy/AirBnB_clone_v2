@@ -94,6 +94,7 @@ class DBStorage:
             if type(cls) is str:
                 cls = eval(cls)
             qry = self.__session.query(cls)
+            self.__objects={}
             for obj in qry:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 self.__objects[key] = obj
