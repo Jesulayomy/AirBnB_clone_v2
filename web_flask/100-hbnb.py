@@ -19,17 +19,28 @@ def teardown_session(exception):
     storage.close()
 
 
-@app.route('/hbnb_filters', strict_slashes=False)
-def hbnb_display():
+@app.route('/hbnb', strict_slashes=False)
+def hbnb_end():
     """ States list of all dump, all_states is a dictionary containing """
 
-    stat_dict = storage.all("State")
     amenity_dict = storage.all("Amenity")
+    place_dict = storage.all("Place")
+    state_dict = storage.all("State")
+    """
+    city_dict = storage.all("City")
+    review_dict = storage.all("Review")
+    user_dict = storage.all("User")
+            reviews_dict=review_dict,
+            users_dict=user_dict,
+            cities_dict=city_dict,
+    """
 
     return render_template(
-            '10-hbnb_filters.html',
-            states_dict=stat_dict,
+            '100-hbnb.html',
+            states_dict=state_dict,
+            places_dict=place_dict,
             amenities_dict=amenity_dict)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
