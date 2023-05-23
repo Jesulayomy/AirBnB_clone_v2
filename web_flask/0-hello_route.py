@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
     This module starts a simple flask application
-    """
+"""
 
 from flask import Flask
 

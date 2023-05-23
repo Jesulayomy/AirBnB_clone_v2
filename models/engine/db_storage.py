@@ -38,51 +38,47 @@ class DBStorage:
             dialect, driver, user, password, host, database),
             pool_pre_ping=True)
 
-        """ sort states and cities table """
         eng = self.__engine
         Session = sessionmaker(bind=eng)
         session = Session()
         metadata = MetaData()
         metadata.bind = eng
-
         metadata.reflect(bind=eng)
 
         tables = metadata.tables
         try:
-            tables = ['amenities', 'cities', 'places', 'reviews', 'states', 'users']
+            tables = [
+                    'amenities',
+                    'cities',
+                    'places',
+                    'reviews',
+                    'states',
+                    'users'
+                ]
             for table in tables:
+                alt = "ALTER TABLE"
+                md = "MODIFY"
                 statements = [
-                    "ALTER TABLE {} MODIFY id varchar(60) FIRST;".format(
-                        table),
-                    "ALTER TABLE {} MODIFY updated_at datetime after id;".format(
-                        table),
-                    "ALTER TABLE {} MODIFY created_at datetime after updated_at;".format(
-                        table)
+                    "{} {} {} id varchar(60) FIRST;".format(
+                        alt,
+                        table,
+                        md),
+                    "{} {} {} updated_at datetime after id;".format(
+                        alt,
+                        table,
+                        md),
+                    "{} {} {} created_at datetime after updated_at;".format(
+                        alt,
+                        table,
+                        md)
                     ]
                 for statement in statements:
                     session.execute(text(statement))
                     session.commit()
-
-            """ Reuse This """
-            """
-            session.execute(text(
-                'ALTER TABLE amenities MODIFY id varchar(60) FIRST;'
-                ))
-            session.commit()
-            session.execute(text(
-                'ALTER TABLE amenities MODIFY updated_at datetime after id;'
-                ))
-            session.commit()
-            session.execute(text(
-                'ALTER TABLE amenities MODIFY created_at datetime after updated_at;'
-                ))
-            session.commit()
-            """
         except Exception:
             pass
 
         session.close()
-        """ """
 
         if is_test == "test":
             Base.metadata.drop_all(self.__engine)
@@ -94,7 +90,7 @@ class DBStorage:
             if type(cls) is str:
                 cls = eval(cls)
             qry = self.__session.query(cls)
-            self.__objects={}
+            self.__objects = {}
             for obj in qry:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 self.__objects[key] = obj

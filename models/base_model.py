@@ -6,7 +6,7 @@ import os
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime, Integer, func
 
 if os.getenv('HBNB_TYPE_STORAGE') == 'db':
